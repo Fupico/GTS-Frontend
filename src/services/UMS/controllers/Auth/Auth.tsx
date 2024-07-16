@@ -1,6 +1,6 @@
-import { RequestManager } from "../../RequestManager";
-import { Result } from "../../resultModel";
-import { AUTH_LOGIN_POSTURL } from "../endpoints";
+import { RequestManager } from "../../../RequestManager.tsx";
+import { Result } from "../../../resultModel.tsx";
+import { AUTH_LOGIN_POSTURL } from "../../endpoints.tsx";
 import { LoginInput, LoginOutput } from "./models/loginModels";
 
 export const login = async (req: LoginInput) => {

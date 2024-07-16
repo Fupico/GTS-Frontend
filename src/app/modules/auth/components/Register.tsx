@@ -4,29 +4,27 @@ import { Button, Form, Input, message, Typography } from "antd";
 import axios from "axios";
 const { Link } = Typography;
 
-import {
-  LoginInput,
-} from "../../../../services/UMS/controllers/Auth/models/loginModels";
+import { RegisterInput } from "../../../../services/UMS/controllers/Auth/models/registerModels";
 
-function Login() {
-  const onFinish: FormProps<LoginInput>["onFinish"] = async (values) => {
+function Register() {
+  const onFinish: FormProps<RegisterInput>["onFinish"] = async (values) => {
     try {
-      console.log('values', values)
-      const response = await axios.post("https://your-api-url.com/login", {
+        console.log('values', values)
+      const response = await axios.post("https://your-api-url.com/register", {
+        username: values.username,
         email: values.email,
         password: values.password,
       });
       // Başarılı yanıt alındığında
       console.log("Response:", response.data);
-    
-      message.success("Login successful!");
+      message.success("Register successful!");
     } catch (error) {
-      console.error("Login error:", error);
-      message.error("Login failed! Please check your credentials.");
+      console.error("Register error:", error);
+      message.error("Register failed! Please check your credentials.");
     }
   };
 
-  const onFinishFailed: FormProps<LoginInput>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<RegisterInput>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
@@ -51,8 +49,15 @@ function Login() {
             borderRadius: "8px",
           }}
         >
-          <h2 style={{ textAlign: "center" }}>GTS - Giriş</h2>
-          <Form name="login" onFinish={onFinish} layout="vertical">
+          <h2 style={{ textAlign: "center" }}>GTS - Kayıt</h2>
+          <Form name="register" onFinish={onFinish} layout="vertical">
+          <Form.Item
+              label="Kullanıcı Adı"
+              name="username"
+              rules={[{ required: true, message: "Lütfen kullanıcı adınızı giriniz!" }]}
+            >
+              <Input />
+            </Form.Item>
             <Form.Item
               label="E-mail"
               name="email"
@@ -75,12 +80,12 @@ function Login() {
                 htmlType="submit"
                 style={{ width: "100%" }}
               >
-                Giriş Yap
+                Kayıt Ol
               </Button>
             </Form.Item>
 
             <Form.Item style={{ textAlign: "right" }}>
-              <Link href="/register">Bir hesabınız yok mu?</Link>
+              <Link href="/login">Zaten bir hesabınız var mı?</Link>
             </Form.Item>
           </Form>
         </div>
@@ -89,4 +94,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
