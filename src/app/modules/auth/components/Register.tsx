@@ -1,27 +1,39 @@
 import Empty from "../../../layouts/Empty";
 import type { FormProps } from "antd";
 import { Button, Form, Input, message, Typography } from "antd";
-import axios from "axios";
 const { Link } = Typography;
 
 import { RegisterInput } from "../../../../services/UMS/controllers/Auth/models/registerModels";
+import { register } from "../../../../services/UMS/controllers/Auth/Auth";
 
 function Register() {
   const onFinish: FormProps<RegisterInput>["onFinish"] = async (values) => {
-    try {
-        console.log('values', values)
-      const response = await axios.post("https://your-api-url.com/register", {
-        username: values.username,
-        email: values.email,
-        password: values.password,
+    console.log("values", values);
+    const input: RegisterInput = {
+      userName: values.userName,
+      email: values.email,
+      password: values.password,
+    };
+    register(input)
+      .then((res) => {
+        if (res.status == 200) {
+          if (!res.data) {
+            message.success("İşlem Başarılı");
+          } else {
+            message.success(res.data.message);
+          }
+        } else {
+          if (res.errors?.isShow) {
+            res.errors.errors.map((error) => message.error(error));
+          } else {
+            message.error("Kayıt oluştulurken bir hata oluştu");
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Register error:", error);
+        message.error("Register failed! Please check your credentials.");
       });
-      // Başarılı yanıt alındığında
-      console.log("Response:", response.data);
-      message.success("Register successful!");
-    } catch (error) {
-      console.error("Register error:", error);
-      message.error("Register failed! Please check your credentials.");
-    }
   };
 
   const onFinishFailed: FormProps<RegisterInput>["onFinishFailed"] = (
@@ -50,27 +62,40 @@ function Register() {
           }}
         >
           <h2 style={{ textAlign: "center" }}>GTS - Kayıt</h2>
-          <Form name="register" onFinish={onFinish} layout="vertical">
-          <Form.Item
+          <Form
+            name="register"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            layout="vertical"
+          >
+            <Form.Item
               label="Kullanıcı Adı"
-              name="username"
-              rules={[{ required: true, message: "Lütfen kullanıcı adınızı giriniz!" }]}
+              name="userName"
+              rules={[
+                {
+                  required: true,
+                  message: "Lütfen kullanıcı adınızı giriniz!",
+                },
+              ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
               label="E-mail"
               name="email"
-              rules={[{ required: true, message: "Lütfen e-mail adresinizi giriniz!" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Lütfen e-mail adresinizi giriniz!",
+                },
+              ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
               label="Şifre"
               name="password"
-              rules={[
-                { required: true, message: "Lütfen şifrenizi giriniz!" },
-              ]}
+              rules={[{ required: true, message: "Lütfen şifrenizi giriniz!" }]}
             >
               <Input.Password />
             </Form.Item>
@@ -85,7 +110,7 @@ function Register() {
             </Form.Item>
 
             <Form.Item style={{ textAlign: "right" }}>
-              <Link href="/login">Zaten bir hesabınız var mı?</Link>
+              <Link href="/auth/login">Zaten bir hesabınız var mı?</Link>
             </Form.Item>
           </Form>
         </div>

@@ -1,11 +1,12 @@
-import { BrowserRouter as Router } from 'react-router-dom';
-import AppRoutes from './routes';
-import "./App.css"
+// import { BrowserRouter as Router } from "react-router-dom";
+// import AppRoutes from "./routes";
+import "./App.css";
+import { AuthInit } from "./contexts/auth/Auth";
+import AppRoutes from "./routing/AppRoutes";
 const App = () => (
-  <Router>
+  <AuthInit>
     <AppRoutes />
-  </Router>
+  </AuthInit>
 );
 
 export default App;
-

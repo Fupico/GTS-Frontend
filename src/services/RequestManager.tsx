@@ -1,10 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-// import {
-//   getAuth,
-//   removeAuth,
-//   setAuth,
-// } from "../../app/modules/auth/core/AuthHelpers";
-// import { AuthModel } from "../../app/modules/auth/core/_models";
+import { getAuth } from "../app/utils/AuthHelpers/AuthHelper";
 
 export class RequestManager {
   private axiosInstance: AxiosInstance;
@@ -15,10 +10,10 @@ export class RequestManager {
 
   private getRequestConfig(): AxiosRequestConfig {
     const headers: any = {};
-    // const auth = getAuth();
-    // if (auth && auth.api_token) {
-    //   headers.Authorization = `Bearer ${auth.api_token}`;
-    // }
+    const auth = getAuth();
+    if (auth && auth.api_token) {
+      headers.Authorization = `Bearer ${auth.api_token}`;
+    }
 
     return {
       headers,

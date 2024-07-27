@@ -1,8 +1,5 @@
 export interface RegisterInput {
-    username:string;
-    email: string;
-    password: string;
-  }
-  
-
-  
+  userName: string;
+  email: string;
+  password: string;
+}

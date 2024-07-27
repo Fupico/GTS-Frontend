@@ -4,8 +4,9 @@ export interface LoginInput {
 }
 
 export interface LoginOutput {
-  claims: string[];
-  token: string;
-  expiration: Date;
+  //claims: string[];
+  accessToken: string;
+  accessTokenExpiration: Date;
   refreshToken: string;
+  refreshTokenExpiration: Date;
 }
